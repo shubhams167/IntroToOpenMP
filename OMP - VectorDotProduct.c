@@ -3,31 +3,36 @@
 #include <omp.h>
 
 int main(int argc, char *argv[]) {
-    size_t i, SIZE = 1000000000;
-    int sum = 0;
+    size_t SIZE = 100000000;
+    size_t i;
+    double dot = 0;
 	
 	//Allocate memory for array in the heap
-    int *arr = (int*)malloc(sizeof(int)*SIZE);
+    double *a = (double*)malloc(sizeof(double)*SIZE);
+    double *b = (double*)malloc(sizeof(double)*SIZE);
     
 	//Fill array with all 1's
-	for (i = 0; i < SIZE; i++) 
-		arr[i] = 1;
+	for (i = 0; i < SIZE; i++){
+		a[i] = 1;
+        b[i] = 2;
+    }
 
 	//Get current time
     double start = omp_get_wtime();
 
 	//Parallel region starts from here
-	#pragma omp parallel for default(shared) reduction(+: sum)
+	#pragma omp parallel for schedule(static, 10000) reduction(+: dot)
 		for (i = 0; i <= SIZE; i++)
-			sum += arr[i];
+			dot += a[i] * b[i];
 	//Parallel region ends here
 
 	//Get current time
 	double end = omp_get_wtime();
     
-	printf("Sum = %d, time = %.10lf", sum, end - start);
+	printf("Dot product = %lf, time = %.10lf", dot, end - start);
 	
 	//Free allocated memory
-	free(arr);
+	free(a);
+    free(b);
     return 0;
 }
