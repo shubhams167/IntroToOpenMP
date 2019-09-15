@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 
 	//Parallel region starts from here
 	#pragma omp parallel for schedule(static, 10000) reduction(+: dot)
-		for (i = 0; i <= SIZE; i++)
+		for (i = 0; i < SIZE; i++)
 			dot += a[i] * b[i];
 	//Parallel region ends here
 

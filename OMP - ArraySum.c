@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 
 	//Parallel region starts from here
 	#pragma omp parallel for default(shared) reduction(+: sum)
-		for (i = 0; i <= SIZE; i++)
+		for (i = 0; i < SIZE; i++)
 			sum += arr[i];
 	//Parallel region ends here
 
